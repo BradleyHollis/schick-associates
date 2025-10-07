@@ -1,5 +1,3 @@
-import './component-styles.css';
-
 const SERVICES = [
   "Financial Modeling",
   "Pitch Materials",

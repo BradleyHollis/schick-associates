@@ -1,5 +1,4 @@
-import "./component-styles.css";
-import {sendMessage} from "../lib/api";
+import { sendMessage } from "../lib/api";
 import { useState } from "react";
 
 export default function Signup() {

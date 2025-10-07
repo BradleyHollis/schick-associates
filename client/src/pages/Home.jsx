@@ -1,6 +1,5 @@
-// client/src/pages/Home.jsx
-import "./home.css";           // optional, if you created it
 import { useEffect } from "react";
+import '../components/component-styles.css';
 import Hero from "../components/Hero";
 import WhatWeDo from "../components/WhatWeDo";
 import Services from "../components/Services";

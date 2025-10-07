@@ -1,6 +1,4 @@
-  import './component-styles.css';
-  
-  export default function WhatWeDo(){
+export default function WhatWeDo(){
   return (
     <section className="section section--what">
       <div className="sa-container what-grid">

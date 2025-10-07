@@ -1,6 +1,4 @@
-  import './component-styles.css';
-  
-  export default function Founder(){
+export default function Founder(){
   return (
     <section className="section">
       <div className="sa-container founder">

@@ -1,6 +1,4 @@
-  import './component-styles.css';
-  
-  export default function Hero(){
+export default function Hero(){
     return (
       <>
         <section id="hero" className="section section--hero">

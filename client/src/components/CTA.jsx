@@ -1,6 +1,4 @@
-import "./component-styles.css";
-
-  export default function CTA() {
+export default function CTA() {
   return (
     <section className="band">
       <div className="sa-container band-row">
