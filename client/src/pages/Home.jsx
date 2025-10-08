@@ -11,12 +11,14 @@ export default function Home() {
   useEffect(() => console.log("Home mounted"), []);
   return (
     <>
-      <Hero/>
-      <WhatWeDo/>
-      <Services/>
-      <CTA />
-      <Founder />
-      <Signup />
+      <div className="section section--bleed hero">
+        <Hero/>
+        <WhatWeDo/>
+        <Services/>
+        <CTA />
+        <Founder />
+        <Signup />
+      </div>
     </>
   );
 }

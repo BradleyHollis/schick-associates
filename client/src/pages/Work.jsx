@@ -1,21 +1,22 @@
-const items = [
-  { title:"ACME Logistics", tag:"Website", img:"/placeholder-1.jpg" },
-  { title:"Rogers & Co", tag:"Brand + Site", img:"/placeholder-2.jpg" },
-  { title:"Marina Dental", tag:"Landing", img:"/placeholder-3.jpg" },
-  { title:"Blue Spruce", tag:"E-com Lite", img:"/placeholder-4.jpg" },
-  { title:"Northline", tag:"Rebrand", img:"/placeholder-5.jpg" },
-  { title:"Holdfast", tag:"Microsite", img:"/placeholder-6.jpg" },
-];
+// src/pages/Work.jsx
+import Page from "../components/Page";
 
-export default function Work(){
+export default function Work() {
+  const items = [
+    { title: "ACME Logistics", tag: "Website" },
+    { title: "Rogers & Co", tag: "Brand + Site" },
+    { title: "Marina Dental", tag: "Landing" },
+    { title: "Blue Spruce", tag: "E-Com Lite" },
+    { title: "Northline", tag: "Rebrand" },
+    { title: "Holdfast", tag: "Microsite" },
+  ];
+
   return (
-    <section className="section container">
-      <h2 style={{fontSize:36, marginBottom:12}}>Selected work</h2>
-      <div className="hr"></div>
-      <div className="grid" style={{marginTop:14}}>
-        {items.map((x,i)=>(
-          <article className="card" key={i}>
-            <div className="card__media"></div>
+    <Page title="Selected work" align="center">
+      <div className="grid">
+        {items.map((x, i) => (
+          <article key={i} className="card">
+            <div className="card__media" />
             <div className="card__body">
               <div className="card__kicker">{x.tag}</div>
               <div className="card__title">{x.title}</div>
@@ -23,6 +24,6 @@ export default function Work(){
           </article>
         ))}
       </div>
-    </section>
+    </Page>
   );
 }

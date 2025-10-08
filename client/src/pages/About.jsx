@@ -1,12 +1,23 @@
-export default function About(){
+import Page from '../components/Page';
+
+export default function About() {
   return (
-    <section className="section container">
-      <h2 style={{fontSize:36, marginBottom:12}}>About</h2>
-      <div className="hr"></div>
-      <p style={{maxWidth:760}}>
-        Schick Associates is a small, friendly studio focused on clarity and results.
-        We pair design fundamentals with pragmatic engineering to ship quickly and iterate.
-      </p>
-    </section>
+    <Page
+      title="About"
+      intro="Schick & Associates is a small, friendly studio focused on clarity and results. We pair good fundamentals with pragmatic engineering to ship quickly and iterate."
+      align="center"
+    >
+      <div className="card">
+        <p>
+          We help founders and owners navigate key milestones with confidence—from positioning
+          and materials to outreach and negotiation. Our approach blends white-shoe experience
+          with Midwest roots for better processes and outcomes.
+        </p>
+        <p>
+          The result is clear communication, disciplined execution, and a focus on maximizing
+          value while preserving certainty of close.
+        </p>
+      </div>
+    </Page>
   );
 }

@@ -1,0 +1,103 @@
+:root{
+  --bg:#f7f7f5;
+  --fg:#0b0b0b;
+  --muted:#8a8a8a;
+  --accent:#2b59ff;
+  --border:#e6e6e6;
+  --maxw:1100px;
+  --pad:24px;
+  
+  --footer-bg: var(--bg);                       /* background behind footer text */
+  --footer-fg: #000;                            /* make the text black */
+  --footer-size: clamp(16px, 1.6vw, 18px);      /* bigger type */
+  --footer-pad: 28px;                           /* vertical padding */
+}
+
+*{box-sizing:border-box}
+html,body,#root{height:100%}
+html,body{margin:0;background:var(--bg);color:var(--fg);
+  font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* Centering & vertical rhythm */
+.container{max-width:var(--maxw);margin-inline:auto;padding-inline:var(--pad)}
+.section{padding:72px 0}
+
+/* NAV */
+.nav{
+  position:sticky;top:0;z-index:30;
+  backdrop-filter:saturate(180%) blur(10px);
+  background:color-mix(in lab, var(--bg) 80%, transparent);
+  border-bottom:1px solid var(--border);
+}
+.nav__row{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:700;letter-spacing:.4px}
+.nav__links{display:flex;gap:18px}
+.nav a{opacity:.8}
+.nav a:hover{opacity:1}
+
+/* Page wrapper */
+.page_header{padding-block:56px;border-bottom:1px solid var(--border)}
+.page_header--center .page_header_wrap{ text-align:center }
+.page_title{
+  font-family:"Cormorant Garamond", Georgia, serif;
+  font-weight:600; line-height:1.1;
+  font-size:clamp(28px,4vw,48px); margin:0 0 10px 0;
+  letter-spacing:.2px;
+}
+.page_intro{max-width:72ch;color:var(--muted);margin:0 auto}
+.page_body{padding-block:24px}
+
+/* Simple “card” */
+.card{background:#fff;border:1px solid var(--border);border-radius:16px;padding:24px}
+
+/* Full-bleed section background while keeping inner content centered */
+.section--bleed {
+  position: relative;
+  width: 100vw;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+}
+
+.footer{
+  width: 100%;
+  background: var(--footer-bg);
+  border-top: 1px solid var(--border);
+  background-color: black;
+  margin-top: auto;
+}
+
+.footer a { color: inherit; text-decoration: none; }
+.footer a:hover { opacity: .9; }
+
+.footer__inner{
+  max-width: var(--maxw);
+  margin-inline: auto;
+  padding: var(--footer-pad) 24px;
+  text-align: center;
+  color: var(--footer-fg);
+  font-size: var(--footer-size);
+  line-height: 1.4;
+  color: gold;
+}
+
+/* Flex column app shell */
+.site{
+  min-height: 100svh;                /* good on iOS Safari too */
+  display: flex;
+  flex-direction: column;
+}
+
+@supports (min-height: 100dvh) {
+  .site { min-height: 100dvh; }      /* modern browsers */
+}
+
+
+/* Main grows to fill remaining space */
+.site_main{
+  flex: 1;
+  display: block;                    /* or grid/flow as you like */
+}

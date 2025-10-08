@@ -12,7 +12,6 @@ export default function Hero(){
             </p>
             <a className="btn btn--accent" href="/contact">Schedule a Consultation</a>
           </div>
-          <div className="hero__bg" />
         </section>
       </>
     );

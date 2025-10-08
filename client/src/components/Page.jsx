@@ -1,17 +1,17 @@
-export default function Page({ title, intro, children, narrow=false }) {
+// src/pages/Page.jsx
+export default function Page({ title, intro, align = "left", children }) {
+  const alignClass = align === "center" ? "center" : "";
   return (
-    <main className="page">
-      <header className="page-header">
-        <div className="container">
-          <h1 className="page-title page-title--xl">{title}</h1>
-          {intro && <p className="page-intro">{intro}</p>}
+    <main className={`page ${alignClass}`}>
+      <header className="page__header">
+        <div className="container page__header_wrap">
+          {title && <h1 className="page__title">{title}</h1>}
+          {intro && <p className="page__intro">{intro}</p>}
         </div>
       </header>
 
-      <div className="page-body">
-        <div className={narrow ? "container container--narrow" : "container"}>
-          {children}
-        </div>
+      <div className="page__body">
+        <div className="container">{children}</div>
       </div>
     </main>
   );

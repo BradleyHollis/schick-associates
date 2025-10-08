@@ -1,31 +1,40 @@
+// src/pages/Contact.jsx
 import { useState } from "react";
-import { sendMessage } from "../lib/api";
+import Page from "../components/Page";
 
-export default function Contact(){
-  const [form,setForm]=useState({name:"",email:"",phone:"",subject:"",message:""});
-  const [status,setStatus]=useState(null);
-  const onChange = e => setForm({...form,[e.target.name]:e.target.value});
+export default function Contact() {
+  const [form, setForm] = useState({ name:"", email:"", phone:"", subject:"", message:"" });
+  const [status, setStatus] = useState("");
+
+  const onChange = e => setForm({ ...form, [e.target.name]: e.target.value });
+
   const onSubmit = async e => {
-    e.preventDefault(); setStatus("sending");
-    try{ await sendMessage(form); setStatus("sent"); setForm({name:"",email:"",phone:"",subject:"",message:""});}
-    catch(e){ setStatus(e.response?.data?.error||"Failed to send"); }
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      const res = await fetch("/api/messages", {
+        method: "POST",
+        headers: { "Content-Type":"application/json" },
+        body: JSON.stringify(form),
+      });
+      setStatus(res.ok ? "sent" : "error");
+    } catch {
+      setStatus("error");
+    }
   };
+
   return (
-    <section className="section container">
-      <h2 style={{fontSize:36, marginBottom:12}}>Contact</h2>
-      <div className="hr"></div>
+    <Page title="Contact">
       <form onSubmit={onSubmit} style={{display:"grid", gap:12, maxWidth:600}}>
-        <input name="name" placeholder="Name" value={form.name} onChange={onChange} required />
-        <input name="email" type="email" placeholder="Email" value={form.email} onChange={onChange} required />
-        <input name="phone" placeholder="Phone (optional)" value={form.phone} onChange={onChange} />
-        <input name="subject" placeholder="Subject (optional)" value={form.subject} onChange={onChange} />
-        <textarea name="message" rows={6} placeholder="How can we help?" value={form.message} onChange={onChange} required></textarea>
-        <button className="btn" type="submit" disabled={status==="sending"}>
-          {status==="sending" ? "Sending…" : "Send message"}
-        </button>
-        {status==="sent" && <p style={{color:"green"}}>Thanks! We’ll be in touch.</p>}
-        {status && status!=="sent" && status!=="sending" && <p style={{color:"crimson"}}>{status}</p>}
+        <input name="name" placeholder="Name" onChange={onChange} required />
+        <input name="email" type="email" placeholder="Email" onChange={onChange} required />
+        <input name="phone" placeholder="Phone (optional)" onChange={onChange} />
+        <input name="subject" placeholder="Subject (optional)" onChange={onChange} />
+        <textarea name="message" placeholder="How can we help?" rows="6" onChange={onChange} required />
+        <button className="btn btn--accent" disabled={status==="sending"}>Send message</button>
+        {status==="sent" && <p style={{color:"green"}}>Thanks — we’ll be in touch.</p>}
+        {status==="error" && <p style={{color:"crimson"}}>Something went wrong. Try again?</p>}
       </form>
-    </section>
+    </Page>
   );
 }

@@ -1,9 +1,10 @@
-export default function Footer(){
-    return (
-    <>
-        <footer className="footer">
-            © {new Date().getFullYear()} Schick & Associates • Making Friends is our Business
-        </footer>
-    </>
-    );
+// src/components/Footer.jsx
+export default function Footer() {
+  return (
+    <footer className="footer" role="contentinfo">
+      <div className="container footer__inner">
+        © 2025 <strong>Schick &amp; Associates</strong> • Making Friends is our Business
+      </div>
+    </footer>
+  );
 }
