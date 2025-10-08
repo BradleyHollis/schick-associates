@@ -5,7 +5,7 @@ export default function Page({ title, intro, align = "left", children }) {
     <main className={`page ${alignClass}`}>
       <header className="page__header">
         <div className="container page__header_wrap">
-          {title && <h1 className="page__title">{title}</h1>}
+          {title && <h1 className="page__title title-font">{title}</h1>}
           {intro && <p className="page__intro">{intro}</p>}
         </div>
       </header>
