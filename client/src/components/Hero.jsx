@@ -8,7 +8,7 @@ export default function Hero(){
                 We have negotiated over <strong>$500 million</strong> in proceeds for owners.
                 We advocate for business owners and stand firm as a trusted advisor throughout the transaction process.
                 Whether selling a business, making strategic acquisitions, or seeking growth capital, we’re here to help.
-                With white-shoe experience and Midwest roots, we deliver better processes and outcomes
+                With white-shoe experience and Midwest roots, we deliver better processes and outcomes.
             </p>
             <a className="btn btn--accent" href="/contact">Schedule a Consultation</a>
           </div>

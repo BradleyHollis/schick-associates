@@ -24,7 +24,7 @@ export default function Signup() {
   return (
     <section className="section">
       <div className="sa-container signup">
-        <h2 className="title-serif title-lg">Sign up for more info</h2>
+        <h2 className="title-serif title-lg">Sign up for more information</h2>
         <form className="form" onSubmit={onSubmit}>
           <input name="first" placeholder="First name" value={form.first} onChange={onChange} required />
           <input name="last" placeholder="Last name" value={form.last} onChange={onChange} required />
