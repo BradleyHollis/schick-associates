@@ -4,6 +4,14 @@
   --navy:#0e2450;
   --ff-sans: "Inter", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
   --ff-serif: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+
+  --hero-blur: 2px;     /* 1–3px */
+  --hero-dim:  .18;     /* global dimmer over the photo */
+  --spotlight-a: .78;   /* raise/lower to taste */
+  --spotlight-b: .52;
+  --spotlight-stop1: 26%;
+  --spotlight-stop2: 48%;
+  --spotlight-stop3: 72%;
 }
 
 body{ font-family: var(--ff-sans); }
@@ -56,16 +64,76 @@ body{background:var(--bg); color:var(--ink)}
 .btn--ghost{border-color:#cfd5e4}
 .btn--light{border-color:#fff;color:#fff}
 
+/* Make sure interactive controls can always receive pointer events */
+a.btn, button.btn {
+  position: relative;
+  z-index: 1;              /* sits above section background */
+  pointer-events: auto;    /* clickable even if a parent was odd */
+  cursor: pointer;
+}
+
 /* hero */
-.section--hero{position:relative; isolation:isolate; min-height:60vh}
-.section--hero{background-color: lightgray;}
+/* HERO */
+/* Hero height that doesn't jump when the mobile URL bar collapses */
+.section--hero{
+  min-height: 62vh;
+  min-height: 62svh;            /* modern phones */
+}
 .section--hero h1{font-size:clamp(40px,6.2vw,72px); margin:0 0 12px}
 .section--hero p{max-width:760px; color:var(--muted)}
-.hero-bg{position:absolute; inset:0; z-index:-1;
-  background:linear-gradient(90deg, rgba(255,255,255,.92), rgba(255,255,255,.65)),
-             url("/hero-blur.jpg") center/cover no-repeat; filter:blur(1px)}
 
+
+/* ← put the blurred photo BEHIND the content */
+.section--hero::before{
+  content:"";
+  position:absolute; inset:0;
+  background:
+    linear-gradient(
+      90deg,
+      rgba(255,255,255,var(--spotlight-a)) 0 var(--spotlight-stop1),
+      rgba(255,255,255,var(--spotlight-b)) var(--spotlight-stop2),
+      rgba(255,255,255,0) var(--spotlight-stop3)
+    ),
+    linear-gradient(0deg, rgba(0,0,0,var(--hero-dim)), rgba(0,0,0,var(--hero-dim))),
+    url("/Hands.jpg") center/cover no-repeat;   /* make sure image is in /public */
+  filter: blur(var(--hero-blur));
+  transform: scale(1.03);
+  z-index: -1;            /* <<< key change */
+  pointer-events: none;   /* keep button clickable */
+}
+
+/* lift your content above the background layer */
+.section--hero > .sa-container{
+  position: relative;     /* <<< add */
+  z-index: 1;             /* <<< add */
+  background: transparent;
+  box-shadow: none;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+.section--hero > .container { position: relative; z-index: 1; }
 /* dark panel card */
+
+/* make text fully opaque & crisp */
+.section--hero .title-font{ color:#0b1015; font-weight:700; letter-spacing:-.015em; }
+.section--hero p{ color:#0f1418; font-weight:520; opacity:1; }
+
+
+/* Any decorative layers should ignore the mouse entirely */
+.section::before,
+.section::after,
+.section--hero::before,
+.hero-bg,
+.panel-dark::before,
+.panel-media::before,
+.panel-media::after {
+  pointer-events: none !important;
+}
+
+/* Sections have their own stacking context so content sits above bg */
+.section { position: relative; z-index: 0; }
+
 .panel-dark{
   display:grid; gap:32px; grid-template-columns:1.15fr 1fr; align-items:center;
   padding:40px; border-radius:20px; color:#fff;
