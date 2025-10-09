@@ -44,7 +44,7 @@ body { overflow-x: hidden; }
 }
 .nav__row{display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{font-weight:700;letter-spacing:.4px}
-.nav__links{display:flex;gap:18px}
+.nav__links{display:flex;gap:18px;}
 .nav a{opacity:.8}
 .nav a:hover{opacity:1}
 
@@ -118,4 +118,10 @@ body { overflow-x: hidden; }
   padding-inline: 0;
   /* if you’re using grid or flex here, also make sure there’s no gap: */
   gap: 0;
+}
+
+.logo-img {
+  height: 75px;  /* adjust to your nav height */
+  width: auto;
+  display: block;
 }
