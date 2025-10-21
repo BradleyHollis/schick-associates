@@ -36,7 +36,6 @@ export default function Signup() {
             <option>Strategic acquisition</option>
             <option>Other</option>
           </select>
-          <div className="captcha">CAPTCHA</div>
           <button className="btn btn--accent" disabled={status==="sending"}>
             {status==="sending" ? "Submitting…" : "Submit"}
           </button>
