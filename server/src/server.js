@@ -7,6 +7,7 @@ import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import { z } from "zod";
 import { customAlphabet } from "nanoid";
+import { sendEmail } from "./utils/sendEmail.js";
 import Subscriber from './models/Subscriber.js';
 import ContactMessage from './models/ContactMessage.js';
 
@@ -45,7 +46,6 @@ const SubscribeSchema = z.object({
   lastName: z.string().optional(),
   source: z.string().optional(),
 });
-
 
 
 app.post("/api/subscribe", async (req, res) => {
@@ -103,22 +103,75 @@ app.get("/api/subscribe/confirm", async (req, res) => {
   sub.confirmToken = null;
   await sub.save();
 
+  // ✅ Send a thank-you email
+  try {
+    await sendEmail({
+      to: sub.email,
+      subject: "Welcome to Schick & Associates",
+      html: `
+        <p>Hi${sub.name ? " " + sub.name : ""},</p>
+        <p>Thank you for confirming your subscription!</p>
+        <p>We’ll keep you updated with important news and insights.</p>
+        <br>
+        <p>— The Schick & Associates Team</p>
+      `
+    });
+  } catch (err) {
+    console.error("Error sending confirmation email:", err);
+  }
+
   return res.redirect(`${process.env.CLIENT_URL}/subscribe-confirmed`);
 });
 
-
 app.post("/api/contact", async (req, res) => {
   try {
-    const { email, name, phone, message } = req.body;
+    // normalize input
+    const email   = String(req.body.email || "").trim().toLowerCase();
+    const name    = String(req.body.name || "").trim();
+    const phone   = String(req.body.phone || "").trim();
+    const subject = String(req.body.subject || "").trim();
+    const message = String(req.body.message || "").trim();
+
     if (!email || !message) {
       return res.status(400).json({ ok: false, message: "Email and message are required." });
     }
 
-    await ContactMessage.create({ email, name, phone, message });
-    res.json({ ok: true, message: "Thanks—your message has been received." });
+    // 1) persist
+    await ContactMessage.create({ email, name, phone, subject, message });
+
+    // 2) always try to notify admin (but don't fail the request if mailer errors)
+    const adminPromise = sendEmail({
+      to: process.env.ADMIN_EMAIL,
+      subject: `New contact from ${name || "Anonymous"}`,
+      text: `From: ${name || "(no name)"} <${email}>
+      Phone: ${phone || "(none)"}
+      Subject: ${subject || "(none)"}${message}`
+    });
+
+    // 3) try user auto-reply (this is what 422s on Trial plans)
+    const userPromise =
+      process.env.MS_RESTRICTED === "true"
+        ? Promise.resolve() // skip/redirect while on trial
+        : sendEmail({
+            to: email,
+            subject: "We received your message — Schick & Associates",
+            html: `<p>Hi${name ? " " + name : ""},</p>
+                   <p>Thanks for reaching out. We’ve received your message and will be in touch shortly.</p>
+                   <hr>
+                   <p><strong>Your message</strong><br>${message.replace(/\n/g, "<br>")}</p>`
+          });
+
+    // don’t throw if either email fails — just log it
+    const [adminResult, userResult] = await Promise.allSettled([adminPromise, userPromise]);
+    if (adminResult.status === "rejected") console.warn("Admin email failed:", adminResult.reason?.message || adminResult.reason);
+    if (userResult.status === "rejected")  console.warn("User email failed:",  userResult.reason?.message  || userResult.reason);
+
+    // 4) respond success to the client
+    return res.json({ ok: true, message: "Thanks—your message has been received." });
+
   } catch (e) {
     console.error(e);
-    res.status(400).json({ ok: false, message: "Invalid data." });
+    return res.status(400).json({ ok: false, message: "Invalid data." });
   }
 });
 

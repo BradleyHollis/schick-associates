@@ -17,8 +17,8 @@ export function subscribe({ email, firstName, lastName, source = "home" }) {
 }
 
 /** Contact/inquiry message (optional but recommended) */
-export function sendContact({ email, name, phone, message }) {
-  return api.post("/api/contact", { email, name, phone, message })
+export function sendContact({ email, name, phone, subject, message }) {
+  return api.post("/api/contact", { email, name, phone, subject, message })
            .then(r => r.data);
 }
 
