@@ -48,6 +48,88 @@ body { overflow-x: hidden; }
 .nav a{opacity:.8}
 .nav a:hover{opacity:1}
 
+/* --- Responsive Navbar Fix --- */
+.logo-img {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+  max-width: 160px;
+  transition: all 0.2s ease;
+}
+
+@media (max-width: 768px) {
+  .nav__row {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    height: auto;
+    padding: 8px 12px;
+  }
+
+  .logo-img {
+    height: 32px;
+    max-width: 130px;
+  }
+
+  .nav__links {
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    gap: 12px;
+    margin-top: 6px;
+  }
+
+  .nav__links a {
+    font-size: 14px;
+    padding: 4px;
+  }
+}
+
+/* Prevent the logo from shrinking; keep it vertically centered */
+.logo { display: flex; align-items: center; min-width: 0; }
+.logo-img { display: block; flex: 0 0 auto; }
+
+/* Let links wrap and not push the logo */
+.nav__links { min-width: 0; }
+.nav__links a { white-space: nowrap; } /* optional; keeps words together */
+
+/* Desktop: logo left, links push to the right */
+@media (min-width: 900px) {
+  .nav__row { gap: 14px; }
+  .logo     { margin-right: 12px; }
+  .nav__links { margin-left: auto; display: flex; gap: 18px; }
+}
+
+/* Mobile already looks good in your media query; just ensure the override wins */
+@media (max-width: 768px) {
+  .nav__row { height: auto !important; } /* force override of the 64px row height */
+}
+
+/* --- Adjust mobile logo scale --- */
+@media (max-width: 600px) {
+  .logo-img {
+    height: 100px;     /* was 32px */
+    max-width: 160px; /* gives a little more brand presence */
+  }
+
+  .nav__row {
+    padding-top: 10px;
+    padding-bottom: 8px;
+  }
+}
+
+/* --- Desktop logo size adjustment --- */
+@media (min-width: 900px) {
+  .logo-img {
+    height: 110px; /* increase from 40px */
+    max-width: 220px; /* gives more presence */
+  }
+
+  .nav__row {
+    height: 80px; /* slightly taller header for balance */
+  }
+}
+
 /* Page wrapper */
 .page_header{padding-block:56px;border-bottom:1px solid var(--border)}
 .page_header--center .page_header_wrap{ text-align:center}
@@ -98,7 +180,7 @@ body { overflow-x: hidden; }
   color: var(--footer-fg);
   font-size: var(--footer-size);
   line-height: 1.4;
-  color: gold;
+  color: lightgray;
 }
 
 /* Flex column app shell */
@@ -118,10 +200,4 @@ body { overflow-x: hidden; }
   padding-inline: 0;
   /* if you’re using grid or flex here, also make sure there’s no gap: */
   gap: 0;
-}
-
-.logo-img {
-  height: 75px;  /* adjust to your nav height */
-  width: auto;
-  display: block;
 }

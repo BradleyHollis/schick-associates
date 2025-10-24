@@ -8,7 +8,6 @@ import Founder from "../components/Founder";
 import Signup from "../components/Signup";
 
 export default function Home() {
-  useEffect(() => console.log("API URL:", import.meta.env.VITE_API_URL), []);
   return (
     <>
       <div className="section section--bleed hero">
