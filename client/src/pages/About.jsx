@@ -4,7 +4,7 @@ export default function About() {
   return (
     <Page
       title="About"
-      intro="Schick & Associates is a small, friendly studio focused on clarity and results. We pair good fundamentals with pragmatic engineering to ship quickly and iterate."
+      intro=""
       align="center"
     >
       <div className="card">

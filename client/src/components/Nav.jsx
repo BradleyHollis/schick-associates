@@ -16,8 +16,8 @@ export default function Nav() {
         {/* This wrapper is required so gap/align rules take effect */}
         <div className="nav__links">
           <NavLink to="/" style={linkStyle}>Home</NavLink>
-          <NavLink to="/work" style={linkStyle}>Work</NavLink>
-          <NavLink to="/services" style={linkStyle}>Services</NavLink>
+          { /* <NavLink to="/work" style={linkStyle}>Work</NavLink> */ }
+          { /* <NavLink to="/services" style={linkStyle}>Services</NavLink> */ }
           <NavLink to="/about" style={linkStyle}>About</NavLink>
           <NavLink to="/contact" style={linkStyle}>Contact</NavLink>
         </div>

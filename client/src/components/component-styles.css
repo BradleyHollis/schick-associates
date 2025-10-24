@@ -301,9 +301,47 @@ a.btn, button.btn {
   }
 }
 
-/* founder */
+/* founder 
 .founder{display:grid; gap:24px; grid-template-columns:1.15fr .85fr; align-items:center}
 .founder-photo{aspect-ratio:3/4; border-radius:16px; border:1px solid var(--border); background:url("/founder.png") center/contain no-repeat, #eef1f7}
+*/
+.founder {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: 1.15fr .85fr;
+  align-items: center;
+}
+
+/* Founder card */
+.founder-photo{
+  aspect-ratio: 3 / 4;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+
+  /* was: center/contain no-repeat */
+  background:
+    url("/founder.jpg") center / cover no-repeat,
+    #eef1f7;
+
+  /* if Evan is still a bit left, nudge the focal point slightly to the right */
+  /* background-position: 55% center;  <-- uncomment to bias right */
+  
+  /* Slightly crisper rendering on some browsers */
+  image-rendering: -webkit-optimize-contrast;
+  image-rendering: crisp-edges; /* harmless fallback */
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 900px) {
+  .founder {
+    grid-template-columns: 1fr;
+  }
+  .founder-photo {
+    min-height: 400px;
+    max-height: none;
+    border-radius: 12px;
+  }
+}
 @media (max-width:900px){ .founder{grid-template-columns:1fr} }
 
 /* signup */
