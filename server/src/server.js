@@ -16,11 +16,32 @@ import requireAuth from './middleware/requireAuth.js';
 
 const app = express();
 
+const PORT = process.env.PORT || 3001;
+const PUBLIC_SERVER_URL =
+  process.env.SERVER_URL ||
+  process.env.RENDER_EXTERNAL_URL ||
+  `http://localhost:${PORT}`;
+
 app.use(helmet());
 app.use(morgan('dev'));
-app.use(express.json());
+app.set('trust proxy', 1);
+app.use(express.json({ limit: '1mb' }));
 app.use(cookieParser());
-app.use(cors({ origin: process.env.CLIENT_URL, credentials: true }));
+
+const allowedOrigins = [
+  'http://localhost:5173',            // Vite dev
+  'http://localhost:3000',            // Next/CRA dev (if used)
+  'https://www.schickassociates.com', // prod site
+];
+
+app.use(cors({
+  origin: (origin, cb) => {
+    // allow non-browser tools (no origin) and whitelisted origins
+    if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+    cb(new Error('Not allowed by CORS'));
+  },
+  credentials: true,
+}));
 
 app.get('/health', (_req, res) => res.json({ ok: true }));
 
@@ -33,12 +54,7 @@ app.get('/api/me', requireAuth, (req, res) => {
 });
 
 
-// simple health check (optional)
-app.get("/health", (req, res) => res.json({ ok: true }));
-
 const nanoid = customAlphabet("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz", 40);
-
-
 
 const SubscribeSchema = z.object({
   email: z.string().email(),
@@ -76,7 +92,7 @@ app.post("/api/subscribe", async (req, res) => {
       });
     }
 
-    const confirmUrl = `${process.env.SERVER_URL}/api/subscribe/confirm?token=${encodeURIComponent(token)}`;
+    const confirmUrl = `${PUBLIC_SERVER_URL}/api/subscribe/confirm?token=${encodeURIComponent(token)}`;
 
     res.json({
       ok: true,
@@ -120,7 +136,7 @@ app.get("/api/subscribe/confirm", async (req, res) => {
     console.error("Error sending confirmation email:", err);
   }
 
-  return res.redirect(`${process.env.CLIENT_URL}/subscribe-confirmed`);
+  return res.redirect(`${process.env.CLIENT_URL || ''}/subscribe-confirmed`);
 });
 
 app.post("/api/contact", async (req, res) => {
@@ -175,7 +191,6 @@ app.post("/api/contact", async (req, res) => {
   }
 });
 
-const PORT = process.env.PORT || 4000;
 await mongoose.connect(process.env.MONGO_URI, { serverSelectionTimeoutMS: 5000 });
 console.log('Mongo connected:', mongoose.connection.host);
 app.listen(PORT, () => console.log(`API → http://localhost:${PORT}`));

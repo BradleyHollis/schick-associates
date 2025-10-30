@@ -8,9 +8,10 @@
     "dev": "nodemon --watch src --ext js,json src/server.js",
     "start": "NODE_ENV=production node src/server.js"
   },
-  "engines": {
-    "node": ">=20.19 <21 || >=22.12"
+  "engines": { 
+    "node": "22.x" 
   },
+
   "dependencies": {
     "bcrypt": "^6.0.0",
     "cookie-parser": "^1.4.7",
