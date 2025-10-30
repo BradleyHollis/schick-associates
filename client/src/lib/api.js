@@ -1,30 +1,45 @@
 // client/src/lib/api.js
 import axios from "axios";
 
+const base = (import.meta.env.VITE_API_URL || "").replace(/\/+$/, "");
+if (!base) {
+  // Fallback for preview environments: same origin
+  // (assumes you might proxy /api in dev)
+  console.warn("VITE_API_URL not set; falling back to current origin");
+}
+
 const api = axios.create({
-  baseURL: (import.meta.env.VITE_API_URL || "").replace(/\/+$/, ""), // no trailing slash
-  withCredentials: true, // harmless now; useful if/when you add auth cookies
+  baseURL: base || "", // if "", axios will use relative URLs
+  withCredentials: true, // fine; your server allows credentials
   headers: { "Content-Type": "application/json" },
-  timeout: 10000
+  timeout: 10000,
 });
 
-// --- API calls ---
+// Optional: normalize errors so UI gets a friendly message
+api.interceptors.response.use(
+  (r) => r,
+  (err) => {
+    const msg =
+      err?.response?.data?.message ||
+      err?.message ||
+      "Something went wrong. Please try again.";
+    return Promise.reject(new Error(msg));
+  }
+);
 
-/** Marketing list subscribe (double opt-in) */
+// --- API calls ---
 export function subscribe({ email, firstName, lastName, source = "home" }) {
   return api.post("/api/subscribe", { email, firstName, lastName, source })
-           .then(r => r.data);
+           .then((r) => r.data);
 }
 
-/** Contact/inquiry message (optional but recommended) */
 export function sendContact({ email, name, phone, subject, message }) {
   return api.post("/api/contact", { email, name, phone, subject, message })
-           .then(r => r.data);
+           .then((r) => r.data);
 }
 
-/** Health check */
 export function getHealth() {
-  return api.get("/health").then(r => r.data);
+  return api.get("/health").then((r) => r.data);
 }
 
 export default api;
